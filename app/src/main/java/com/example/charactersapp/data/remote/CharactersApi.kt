@@ -13,14 +13,14 @@ interface CharactersApi {
     fun getAllCharacters(): CharactersFeed
 
     @GET("people/{peopleId}")
-    fun getCharacter(@Path("peopleId") planetId: String): Character
+    fun getCharacter(@Path("peopleId") peopleId: String): Character
 
     @GET("planets/{planetId}")
     fun getPlanet(@Path("planetId") planetId: String): Planet
 
     @GET("starships/{starshipId}")
-    fun getStarship(@Path("starshipId") planetId: String): Starships
+    fun getStarship(@Path("starshipId") starshipId: String): Starships
 
     @GET("films/{filmId}")
-    fun getFilm(@Path("filmId") planetId: String): Starships
+    fun getFilm(@Path("filmId") filmId: String): Starships
 }

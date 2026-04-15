@@ -1,4 +1,4 @@
-package com.example.charactersapp.data.db
+package com.example.charactersapp.data.local
 
 class AppDataBase {
     // сохраняем ПРОСМОТРЕННЫХ
