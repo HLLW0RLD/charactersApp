@@ -1,4 +1,4 @@
-package com.example.charactersapp.data.local
+package com.example.charactersapp.data.local.db
 
 import androidx.room.Dao
 

@@ -1,4 +1,4 @@
-package com.example.charactersapp.domain.model
+package com.example.charactersapp.data.remote.dto
 
 data class CharactersFeed(
     val count: Long,

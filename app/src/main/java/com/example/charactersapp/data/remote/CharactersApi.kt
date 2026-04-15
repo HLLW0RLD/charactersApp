@@ -1,9 +1,12 @@
 package com.example.charactersapp.data.remote
 
-import com.example.charactersapp.domain.model.Character
-import com.example.charactersapp.domain.model.CharactersFeed
-import com.example.charactersapp.domain.model.Planet
-import com.example.charactersapp.domain.model.Starships
+import com.example.charactersapp.data.remote.dto.Character
+import com.example.charactersapp.data.remote.dto.CharactersFeed
+import com.example.charactersapp.data.remote.dto.Film
+import com.example.charactersapp.data.remote.dto.Planet
+import com.example.charactersapp.data.remote.dto.Species
+import com.example.charactersapp.data.remote.dto.Starships
+import com.example.charactersapp.data.remote.dto.Vehicles
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -22,5 +25,11 @@ interface CharactersApi {
     fun getStarship(@Path("starshipId") starshipId: String): Starships
 
     @GET("films/{filmId}")
-    fun getFilm(@Path("filmId") filmId: String): Starships
+    fun getFilm(@Path("filmId") filmId: String): Film
+
+    @GET("species/{speciesId}")
+    fun getSpecies(@Path("speciesId") speciesId: String): Species
+
+    @GET("vehicles/{vehicleId}")
+    fun getVehicles(@Path("vehicleId") vehicleId: String): Vehicles
 }

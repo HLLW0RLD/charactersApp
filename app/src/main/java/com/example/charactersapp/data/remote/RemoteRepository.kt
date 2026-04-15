@@ -1,12 +1,15 @@
 package com.example.charactersapp.data.remote
 
-import com.example.charactersapp.domain.model.Character
-import com.example.charactersapp.domain.model.CharactersFeed
-import com.example.charactersapp.domain.model.Planet
-import com.example.charactersapp.domain.model.Starships
-import com.example.charactersapp.domain.repository.Repository
+import com.example.charactersapp.data.remote.dto.Character
+import com.example.charactersapp.data.remote.dto.CharactersFeed
+import com.example.charactersapp.data.remote.dto.Film
+import com.example.charactersapp.data.remote.dto.Planet
+import com.example.charactersapp.data.remote.dto.Species
+import com.example.charactersapp.data.remote.dto.Starships
+import com.example.charactersapp.data.remote.dto.Vehicles
+import com.example.charactersapp.domain.repository.IRemoteRepository
 
-class RemoteRepository(val api: CharactersApi): Repository {
+class RemoteRepository(val api: CharactersApi): IRemoteRepository {
 
     override fun getAllCharacters(): CharactersFeed {
         return api.getAllCharacters()
@@ -24,7 +27,15 @@ class RemoteRepository(val api: CharactersApi): Repository {
         return api.getStarship(starshipId)
     }
 
-    override fun getFilm(filmId: String): Starships {
+    override fun getFilm(filmId: String): Film {
         return api.getFilm(filmId)
+    }
+
+    override fun getSpecies(speciesId: String): Species {
+        return api.getSpecies(speciesId)
+    }
+
+    override fun getVehicles(vehicleId: String): Vehicles {
+        return api.getVehicles(vehicleId)
     }
 }
