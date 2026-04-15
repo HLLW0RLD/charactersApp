@@ -1,8 +1,8 @@
-package com.example.charactersapp.domain.model
+package com.example.charactersapp.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Starships(
+data class Vehicles(
     val name: String,
     val model: String,
     val manufacturer: String,
@@ -16,12 +16,8 @@ data class Starships(
     @SerializedName("cargo_capacity")
     val cargoCapacity: String,
     val consumables: String,
-    @SerializedName("hyperdrive_rating")
-    val hyperdriveRating: String,
-    @SerializedName("MGLT")
-    val mglt: String,
-    @SerializedName("starship_class")
-    val starshipClass: String,
+    @SerializedName("vehicle_class")
+    val vehicleClass: String,
     val created: String,
     val edited: String,
     val url: String,
