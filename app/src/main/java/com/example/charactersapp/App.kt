@@ -6,16 +6,16 @@ import com.example.charactersapp.data.di.dbModule
 import com.example.charactersapp.data.di.repoModule
 import com.example.charactersapp.presentation.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.GlobalContext
+import org.koin.core.context.startKoin
 
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
-        _instance  = this
+        instance  = this
 
-        GlobalContext.startKoin {
+        startKoin {
             androidContext(this@App)
             modules(
                 apiModule,
@@ -27,8 +27,7 @@ class App : Application() {
     }
 
     companion object {
-        private var _instance: App? = null
-        val instance: App
-            get() = _instance!!
+        lateinit var instance: App
+            private set
     }
 }

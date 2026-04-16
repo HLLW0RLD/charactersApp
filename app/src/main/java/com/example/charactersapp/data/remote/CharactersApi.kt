@@ -14,23 +14,23 @@ import retrofit2.http.Query
 interface CharactersApi {
 
     @GET("people/")
-    fun getAllCharacters(@Query("page") page: Int? = null): CharactersPagingData
+    suspend fun getAllCharacters(@Query("page") page: Int? = null): CharactersPagingData
 
     @GET("people/{peopleId}")
-    fun getCharacter(@Path("peopleId") peopleId: String): CharacterDTO
+    suspend fun getCharacter(@Path("peopleId") peopleId: String): CharacterDTO
 
     @GET("planets/{planetId}")
-    fun getPlanet(@Path("planetId") planetId: String): PlanetDTO
+    suspend fun getPlanet(@Path("planetId") planetId: String): PlanetDTO
 
     @GET("starships/{starshipId}")
-    fun getStarship(@Path("starshipId") starshipId: String): StarshipsDTO
+    suspend fun getStarship(@Path("starshipId") starshipId: String): StarshipsDTO
 
     @GET("films/{filmId}")
-    fun getFilm(@Path("filmId") filmId: String): FilmDTO
+    suspend fun getFilm(@Path("filmId") filmId: String): FilmDTO
 
     @GET("species/{speciesId}")
-    fun getSpecies(@Path("speciesId") speciesId: String): SpeciesDTO
+    suspend fun getSpecies(@Path("speciesId") speciesId: String): SpeciesDTO
 
     @GET("vehicles/{vehicleId}")
-    fun getVehicles(@Path("vehicleId") vehicleId: String): VehiclesDTO
+    suspend fun getVehicles(@Path("vehicleId") vehicleId: String): VehiclesDTO
 }

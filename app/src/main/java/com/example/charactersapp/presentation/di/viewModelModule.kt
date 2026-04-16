@@ -9,7 +9,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
 
     factory { GetCharactersDetailsUseCase(get(), get()) }
-    factory { GetCharactersFeedUseCase(get(), get()) }
+    factory { GetCharactersFeedUseCase(get()/*, get()*/) }
 
     viewModel { CharactersFeedViewModel(get()) }
 

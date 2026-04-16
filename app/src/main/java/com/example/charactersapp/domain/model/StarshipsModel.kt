@@ -19,7 +19,4 @@ data class StarshipsModel(
     val created: String,
     val edited: String,
     val url: String,
-
-    val pilots: List<String>,
-    val films: List<String>,
 )

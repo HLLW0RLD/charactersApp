@@ -9,11 +9,11 @@ import com.example.charactersapp.domain.model.VehiclesModel
 import com.example.charactersapp.domain.model.FilmModel
 
 interface IRemoteRepository {
-    fun getAllCharacters(page: Int): CharactersPage
-    fun getCharacter(peopleId: String): CharacterModel
-    fun getPlanet(planetId: String): PlanetModel
-    fun getStarship(starshipId: String): StarshipsModel
-    fun getFilm(filmId: String): FilmModel
-    fun getSpecies(speciesId: String): SpeciesModel
-    fun getVehicles(vehicleId: String): VehiclesModel
+    suspend fun getAllCharacters(page: Int): CharactersPage
+    suspend fun getCharacter(peopleId: String): CharacterModel?
+    suspend fun getPlanet(planetId: String): PlanetModel?
+    suspend fun getStarship(starshipId: String): StarshipsModel?
+    suspend fun getFilm(filmId: String): FilmModel?
+    suspend fun getSpecies(speciesId: String): SpeciesModel?
+    suspend fun getVehicles(vehicleId: String): VehiclesModel?
 }

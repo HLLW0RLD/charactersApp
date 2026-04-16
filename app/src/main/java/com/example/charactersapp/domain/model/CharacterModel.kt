@@ -10,12 +10,12 @@ data class CharacterModel(
     val eyeColor: String,
     val birthYear: String,
     val gender: String,
-    val homeworld: PlanetModel,
+    val homeworld: PlanetModel?,
     val created: String,
     val edited: String,
 
-    val films: List<FilmModel>,
-    val species: List<SpeciesModel>,
-    val vehicles: List<VehiclesModel>,
-    val starships: List<StarshipsModel>,
+    val films: List<FilmModel?>,
+    val species: List<SpeciesModel?>,
+    val vehicles: List<VehiclesModel?>,
+    val starships: List<StarshipsModel?>,
 )

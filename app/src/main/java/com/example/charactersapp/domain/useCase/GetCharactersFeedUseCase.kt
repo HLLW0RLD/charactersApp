@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.Flow
 
 class GetCharactersFeedUseCase(
     val remoteRepository: IRemoteRepository,
-    val localRepository: ILocalRepository
+//    val localRepository: ILocalRepository
+
 ) {
 
     fun getCharactersFeed(): Flow<PagingData<CharacterFeedModel>> {
