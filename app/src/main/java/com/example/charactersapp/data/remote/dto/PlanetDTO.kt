@@ -2,7 +2,7 @@ package com.example.charactersapp.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Planet(
+data class PlanetDTO(
     val name: String,
     @SerializedName("rotation_period")
     val rotationPeriod: String,

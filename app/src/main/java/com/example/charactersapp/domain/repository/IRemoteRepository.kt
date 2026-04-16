@@ -1,21 +1,19 @@
 package com.example.charactersapp.domain.repository
 
-import com.example.charactersapp.data.remote.dto.Character
-import com.example.charactersapp.data.remote.dto.CharactersFeed
-import com.example.charactersapp.data.remote.dto.Film
-import com.example.charactersapp.data.remote.dto.Planet
-import com.example.charactersapp.data.remote.dto.Species
-import com.example.charactersapp.data.remote.dto.Starships
-import com.example.charactersapp.data.remote.dto.Vehicles
-import retrofit2.http.GET
-import retrofit2.http.Path
+import com.example.charactersapp.data.remote.paging.CharactersPage
+import com.example.charactersapp.domain.model.CharacterModel
+import com.example.charactersapp.domain.model.PlanetModel
+import com.example.charactersapp.domain.model.SpeciesModel
+import com.example.charactersapp.domain.model.StarshipsModel
+import com.example.charactersapp.domain.model.VehiclesModel
+import com.example.charactersapp.domain.model.FilmModel
 
 interface IRemoteRepository {
-    fun getAllCharacters(): CharactersFeed
-    fun getCharacter(peopleId: String): Character
-    fun getPlanet(planetId: String): Planet
-    fun getStarship(starshipId: String): Starships
-    fun getFilm(filmId: String): Film
-    fun getSpecies(speciesId: String): Species
-    fun getVehicles(vehicleId: String): Vehicles
+    fun getAllCharacters(page: Int): CharactersPage
+    fun getCharacter(peopleId: String): CharacterModel
+    fun getPlanet(planetId: String): PlanetModel
+    fun getStarship(starshipId: String): StarshipsModel
+    fun getFilm(filmId: String): FilmModel
+    fun getSpecies(speciesId: String): SpeciesModel
+    fun getVehicles(vehicleId: String): VehiclesModel
 }

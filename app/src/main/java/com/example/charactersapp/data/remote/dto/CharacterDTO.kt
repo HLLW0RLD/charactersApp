@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Character(
+data class CharacterDTO(
     val name: String,
     val height: String,
     val mass: String,

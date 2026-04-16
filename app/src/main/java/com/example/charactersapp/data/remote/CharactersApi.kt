@@ -1,35 +1,36 @@
 package com.example.charactersapp.data.remote
 
-import com.example.charactersapp.data.remote.dto.Character
-import com.example.charactersapp.data.remote.dto.CharactersFeed
-import com.example.charactersapp.data.remote.dto.Film
-import com.example.charactersapp.data.remote.dto.Planet
-import com.example.charactersapp.data.remote.dto.Species
-import com.example.charactersapp.data.remote.dto.Starships
-import com.example.charactersapp.data.remote.dto.Vehicles
+import com.example.charactersapp.data.remote.dto.CharacterDTO
+import com.example.charactersapp.data.remote.dto.CharactersPagingData
+import com.example.charactersapp.data.remote.dto.FilmDTO
+import com.example.charactersapp.data.remote.dto.PlanetDTO
+import com.example.charactersapp.data.remote.dto.SpeciesDTO
+import com.example.charactersapp.data.remote.dto.StarshipsDTO
+import com.example.charactersapp.data.remote.dto.VehiclesDTO
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface CharactersApi {
 
     @GET("people/")
-    fun getAllCharacters(): CharactersFeed
+    fun getAllCharacters(@Query("page") page: Int? = null): CharactersPagingData
 
     @GET("people/{peopleId}")
-    fun getCharacter(@Path("peopleId") peopleId: String): Character
+    fun getCharacter(@Path("peopleId") peopleId: String): CharacterDTO
 
     @GET("planets/{planetId}")
-    fun getPlanet(@Path("planetId") planetId: String): Planet
+    fun getPlanet(@Path("planetId") planetId: String): PlanetDTO
 
     @GET("starships/{starshipId}")
-    fun getStarship(@Path("starshipId") starshipId: String): Starships
+    fun getStarship(@Path("starshipId") starshipId: String): StarshipsDTO
 
     @GET("films/{filmId}")
-    fun getFilm(@Path("filmId") filmId: String): Film
+    fun getFilm(@Path("filmId") filmId: String): FilmDTO
 
     @GET("species/{speciesId}")
-    fun getSpecies(@Path("speciesId") speciesId: String): Species
+    fun getSpecies(@Path("speciesId") speciesId: String): SpeciesDTO
 
     @GET("vehicles/{vehicleId}")
-    fun getVehicles(@Path("vehicleId") vehicleId: String): Vehicles
+    fun getVehicles(@Path("vehicleId") vehicleId: String): VehiclesDTO
 }

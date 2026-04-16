@@ -56,6 +56,10 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.converter.gson)
 
+    // paging
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+
     // navigation
     implementation(libs.androidx.navigation.compose)
 

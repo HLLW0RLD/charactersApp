@@ -2,7 +2,7 @@ package com.example.charactersapp.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Species(
+data class SpeciesDTO(
     val name: String,
     val classification: String,
     val designation: String,

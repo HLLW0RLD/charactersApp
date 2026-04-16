@@ -2,7 +2,7 @@ package com.example.charactersapp.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Film(
+data class FilmDTO(
     val title: String,
     @SerializedName("episode_id")
     val episodeId: Long,
