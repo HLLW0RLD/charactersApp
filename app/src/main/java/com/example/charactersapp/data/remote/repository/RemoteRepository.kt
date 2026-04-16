@@ -1,8 +1,10 @@
-package com.example.charactersapp.data.remote
+package com.example.charactersapp.data.remote.repository
 
-
-import com.example.charactersapp.data.remote.paging.CharactersPage
-import com.example.charactersapp.domain.model.CharacterFeedModel
+import com.example.charactersapp.data.converters.toBaseCharacterModel
+import com.example.charactersapp.data.converters.toFeedModel
+import com.example.charactersapp.data.converters.toModel
+import com.example.charactersapp.data.paging.CharactersPage
+import com.example.charactersapp.data.remote.api.CharactersApi
 import com.example.charactersapp.domain.model.CharacterModel
 import com.example.charactersapp.domain.model.FilmModel
 import com.example.charactersapp.domain.model.PlanetModel
@@ -21,18 +23,7 @@ class RemoteRepository(val api: CharactersApi): IRemoteRepository {
 
         return try {
             CharactersPage(
-                characters = response.results.map { dto ->
-                    CharacterFeedModel(
-                        name = dto.name,
-                        height = dto.height,
-                        mass = dto.mass,
-                        hairColor = dto.hairColor,
-                        skinColor = dto.skinColor,
-                        eyeColor = dto.eyeColor,
-                        birthYear = dto.birthYear,
-                        gender = dto.gender
-                    )
-                },
+                characters = response.results.map { it.toFeedModel(extractIdFromUrl(it.url)) },
                 hasNextPage = response.next != null,
                 hasPreviousPage = response.previous != null,
                 isSuccess = true
@@ -107,22 +98,12 @@ class RemoteRepository(val api: CharactersApi): IRemoteRepository {
                     }
                 }
 
-                CharacterModel(
-                    name = dto.name,
-                    height = dto.height,
-                    mass = dto.mass,
-                    hairColor = dto.hairColor,
-                    skinColor = dto.skinColor,
-                    eyeColor = dto.eyeColor,
-                    birthYear = dto.birthYear,
-                    gender = dto.gender,
+                dto.toBaseCharacterModel(
                     homeworld = homeworldDeferred.await(),
                     films = filmsDeferred.await(),
                     species = speciesDeferred.await(),
                     vehicles = vehiclesDeferred.await(),
-                    starships = starshipsDeferred.await(),
-                    created = dto.created,
-                    edited = dto.edited,
+                    starships = starshipsDeferred.await()
                 )
             }
         } catch (e: Exception) {
@@ -133,21 +114,7 @@ class RemoteRepository(val api: CharactersApi): IRemoteRepository {
 
     override suspend fun getPlanet(planetId: String): PlanetModel? {
         return try {
-            val dto = api.getPlanet(planetId)
-            PlanetModel(
-                name = dto.name,
-                rotationPeriod = dto.rotationPeriod,
-                orbitalPeriod = dto.orbitalPeriod,
-                diameter = dto.diameter,
-                climate = dto.climate,
-                gravity = dto.gravity,
-                terrain = dto.terrain,
-                surfaceWater = dto.surfaceWater,
-                population = dto.population,
-                created = dto.created,
-                edited = dto.edited,
-                url = dto.url
-            )
+            api.getPlanet(planetId).toModel()
         } catch (e: Exception) {
             logError(e)
             null
@@ -156,25 +123,7 @@ class RemoteRepository(val api: CharactersApi): IRemoteRepository {
 
     override suspend fun getStarship(starshipId: String): StarshipsModel? {
         return try {
-            val dto = api.getStarship(starshipId)
-            StarshipsModel(
-                name = dto.name,
-                model = dto.model,
-                manufacturer = dto.manufacturer,
-                costInCredits = dto.costInCredits,
-                length = dto.length,
-                maxAtmospheringSpeed = dto.maxAtmospheringSpeed,
-                crew = dto.crew,
-                passengers = dto.passengers,
-                cargoCapacity = dto.cargoCapacity,
-                consumables = dto.consumables,
-                hyperdriveRating = dto.hyperdriveRating,
-                mglt = dto.mglt,
-                starshipClass = dto.starshipClass,
-                created = dto.created,
-                edited = dto.edited,
-                url = dto.url,
-            )
+            api.getStarship(starshipId).toModel()
         } catch (e: Exception) {
             logError(e)
             null
@@ -183,17 +132,7 @@ class RemoteRepository(val api: CharactersApi): IRemoteRepository {
 
     override suspend fun getFilm(filmId: String): FilmModel? {
         return try {
-            val dto = api.getFilm(filmId)
-            FilmModel(
-                title = dto.title,
-                episodeId = dto.episodeId,
-                openingCrawl = dto.openingCrawl,
-                director = dto.director,
-                producer = dto.producer,
-                releaseDate = dto.releaseDate,
-                created = dto.created,
-                edited = dto.edited
-            )
+            api.getFilm(filmId).toModel()
         } catch (e: Exception) {
             logError(e)
             null
@@ -202,21 +141,7 @@ class RemoteRepository(val api: CharactersApi): IRemoteRepository {
 
     override suspend fun getSpecies(speciesId: String): SpeciesModel? {
         return try {
-            val dto = api.getSpecies(speciesId)
-            SpeciesModel(
-                name = dto.name,
-                classification = dto.classification,
-                designation = dto.designation,
-                averageHeight = dto.averageHeight,
-                skinColors = dto.skinColors,
-                hairColors = dto.hairColors,
-                eyeColors = dto.eyeColors,
-                averageLifespan = dto.averageLifespan,
-                homeworld = dto.homeworld,
-                language = dto.language,
-                created = dto.created,
-                edited = dto.edited
-            )
+            api.getSpecies(speciesId).toModel()
         } catch (e: Exception) {
             logError(e)
             null
@@ -225,22 +150,7 @@ class RemoteRepository(val api: CharactersApi): IRemoteRepository {
 
     override suspend fun getVehicles(vehicleId: String): VehiclesModel? {
         return try {
-            val dto = api.getVehicles(vehicleId)
-            VehiclesModel(
-                name = dto.name,
-                model = dto.model,
-                manufacturer = dto.manufacturer,
-                costInCredits = dto.costInCredits,
-                length = dto.length,
-                maxAtmospheringSpeed = dto.maxAtmospheringSpeed,
-                crew = dto.crew,
-                passengers = dto.passengers,
-                cargoCapacity = dto.cargoCapacity,
-                consumables = dto.consumables,
-                vehicleClass = dto.vehicleClass,
-                created = dto.created,
-                edited = dto.edited
-            )
+            api.getVehicles(vehicleId).toModel()
         } catch (e: Exception) {
             logError(e)
             null

@@ -1,5 +1,8 @@
 package com.example.charactersapp.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class FilmModel(
     val title: String,
     val episodeId: Long,

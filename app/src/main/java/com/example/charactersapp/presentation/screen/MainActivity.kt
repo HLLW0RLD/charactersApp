@@ -41,6 +41,12 @@ class MainActivity : ComponentActivity() {
                         ) {
                             CharactersFeedScreen()
                         }
+
+                        animatedComposable<CharacterDetails>(
+                            navController = navController
+                        ) {
+                            CharacterDetailsScreen(it)
+                        }
                     }
                 }
             }

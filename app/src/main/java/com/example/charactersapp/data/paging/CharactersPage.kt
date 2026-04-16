@@ -1,4 +1,4 @@
-package com.example.charactersapp.data.remote.paging
+package com.example.charactersapp.data.paging
 
 import com.example.charactersapp.domain.model.CharacterFeedModel
 

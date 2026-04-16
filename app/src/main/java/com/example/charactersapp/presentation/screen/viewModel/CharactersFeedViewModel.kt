@@ -9,7 +9,6 @@ class CharactersFeedViewModel(
     private val getCharactersFeedUseCase: GetCharactersFeedUseCase
 ): ViewModel() {
 
-
     val characters = getCharactersFeedUseCase
         .getCharactersFeed()
         .cachedIn(viewModelScope)

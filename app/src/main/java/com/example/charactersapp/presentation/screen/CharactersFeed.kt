@@ -1,5 +1,6 @@
 package com.example.charactersapp.presentation.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -127,10 +128,16 @@ fun CharacterItem(
     character: CharacterFeedModel,
     modifier: Modifier = Modifier
 ) {
+
+    val navController = LocalNavController.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable {
+                navController.navigate(CharacterDetails(character.id))
+            },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(12.dp)
     ) {

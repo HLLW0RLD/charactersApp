@@ -1,6 +1,8 @@
 package com.example.charactersapp.domain.model
 
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PlanetModel(
     val name: String,
     val rotationPeriod: String,

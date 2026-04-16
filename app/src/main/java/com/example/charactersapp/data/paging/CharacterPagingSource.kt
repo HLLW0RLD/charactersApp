@@ -1,20 +1,21 @@
-package com.example.charactersapp.data.remote.paging
+package com.example.charactersapp.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.charactersapp.domain.model.CharacterFeedModel
+import com.example.charactersapp.domain.repository.ILocalRepository
 import com.example.charactersapp.domain.repository.IRemoteRepository
 import com.example.charactersapp.presentation.utils.logError
-import java.io.IOException
 
 class CharacterPagingSource(
-    private val repo: IRemoteRepository
+    private val remoteRepository: IRemoteRepository,
+    private val localRepository: ILocalRepository
 ) : PagingSource<Int, CharacterFeedModel>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterFeedModel> {
         return try {
             val page = params.key ?: 1
-            val pageData = repo.getAllCharacters(page)
+            val pageData = remoteRepository.getAllCharacters(page)
 
             if (pageData.isSuccess) {
                 LoadResult.Page(
@@ -23,14 +24,28 @@ class CharacterPagingSource(
                     nextKey = if (pageData.hasNextPage) page + 1 else null
                 )
             } else {
-                logError("Failed to load characters for page $page")
+                val cached = localRepository.getAllCharactersFeed()
 
-                LoadResult.Error(IOException("Failed to load characters for page $page"))
+                LoadResult.Page(
+                    data = cached,
+                    prevKey = null,
+                    nextKey = null
+                )
             }
 
         } catch (e: Exception) {
-            logError(e)
-            LoadResult.Error(e)
+            try {
+                val cached = localRepository.getAllCharactersFeed()
+
+                LoadResult.Page(
+                    data = cached,
+                    prevKey = null,
+                    nextKey = null
+                )
+            } catch (e: Exception) {
+                logError(e)
+                LoadResult.Error(e)
+            }
         }
     }
 

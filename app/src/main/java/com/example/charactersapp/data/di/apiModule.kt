@@ -1,6 +1,6 @@
 package com.example.charactersapp.data.di
 
-import com.example.charactersapp.data.remote.CharactersApi
+import com.example.charactersapp.data.remote.api.CharactersApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module

@@ -1,4 +1,4 @@
-package com.example.charactersapp.data.remote
+package com.example.charactersapp.data.remote.api
 
 import com.example.charactersapp.data.remote.dto.CharacterDTO
 import com.example.charactersapp.data.remote.dto.CharactersPagingData

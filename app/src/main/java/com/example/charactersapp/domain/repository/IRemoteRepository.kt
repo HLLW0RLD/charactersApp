@@ -1,6 +1,6 @@
 package com.example.charactersapp.domain.repository
 
-import com.example.charactersapp.data.remote.paging.CharactersPage
+import com.example.charactersapp.data.paging.CharactersPage
 import com.example.charactersapp.domain.model.CharacterModel
 import com.example.charactersapp.domain.model.PlanetModel
 import com.example.charactersapp.domain.model.SpeciesModel

@@ -1,6 +1,8 @@
 package com.example.charactersapp.domain.model
 
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CharacterModel(
     val name: String,
     val height: String,
