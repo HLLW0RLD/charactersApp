@@ -87,7 +87,7 @@ fun CharacterDetailsScreen(
                     )
                 }
                 Text(
-                    text = "Информация",
+                    text = stringResource(R.string.information),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -179,38 +179,55 @@ fun CharacterDetailsContent(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            ExpandableSection(title = character?.name ?: "") {
+            Column {
+                Text(
+                    text = character?.name ?: "",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold
+                )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = listOfNotNull(
+                        character?.gender,
+                        character?.birthYear
+                    ).joinToString(" • "),
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
 
-                DetailRow(
-                    label = stringResource(id = R.string.height),
-                    value = "${character?.height} см"
-                )
-                DetailRow(
-                    label = stringResource(id = R.string.mass),
-                    value = "${character?.mass} кг"
-                )
-                DetailRow(
-                    label = stringResource(R.string.hair_color),
-                    value = character?.hairColor ?: ""
-                )
-                DetailRow(
-                    label = stringResource(R.string.skin_color),
-                    value = character?.skinColor ?: ""
-                )
-                DetailRow(
-                    label = stringResource(R.string.eye_color),
-                    value = character?.eyeColor ?: ""
-                )
-                DetailRow(
-                    label = stringResource(R.string.birth_year),
-                    value = character?.birthYear ?: ""
-                )
-                DetailRow(
-                    label = stringResource(R.string.gender),
-                    value = character?.gender ?: ""
-                )
+        item {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(2.dp),
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+
+                    DetailRow(
+                        label = stringResource(R.string.height),
+                        value = "${character?.height} см"
+                    )
+                    DetailRow(
+                        label = stringResource(R.string.mass),
+                        value = "${character?.mass} кг"
+                    )
+                    DetailRow(
+                        label = stringResource(R.string.hair_color),
+                        value = character?.hairColor ?: ""
+                    )
+                    DetailRow(
+                        label = stringResource(R.string.skin_color),
+                        value = character?.skinColor ?: ""
+                    )
+                    DetailRow(
+                        label = stringResource(R.string.eye_color),
+                        value = character?.eyeColor ?: ""
+                    )
+                }
             }
         }
 
@@ -314,7 +331,7 @@ fun DetailRow(
 fun ExpandableSection(
     title: String,
     modifier: Modifier = Modifier,
-    initiallyExpanded: Boolean = true,
+    initiallyExpanded: Boolean = false,
     content: @Composable () -> Unit
 ) {
     var expanded by remember { mutableStateOf(initiallyExpanded) }
@@ -338,7 +355,7 @@ fun ExpandableSection(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f),
-                    color = MaterialTheme.colorScheme.primary
+                    color = Color.White
                 )
 
                 Icon(

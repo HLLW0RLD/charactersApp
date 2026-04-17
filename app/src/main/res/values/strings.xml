@@ -17,6 +17,7 @@
     <string name="name">Название</string>
     <string name="climate">Климат</string>
     <string name="terrain">Террейн</string>
+    <string name="information">Информация</string>
     <string name="population">Население</string>
     <string name="films">Фильмы</string>
     <string name="species">Виды</string>
