@@ -1,5 +1,12 @@
 package com.example.charactersapp.presentation.screen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,12 +16,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,12 +32,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.charactersapp.R
 import com.example.charactersapp.domain.model.CharacterModel
 import com.example.charactersapp.domain.model.FilmModel
 import com.example.charactersapp.domain.model.SpeciesModel
@@ -35,6 +51,7 @@ import com.example.charactersapp.domain.model.StarshipsModel
 import com.example.charactersapp.domain.model.VehiclesModel
 import com.example.charactersapp.presentation.screen.viewModel.CharacterDetailsState
 import com.example.charactersapp.presentation.screen.viewModel.CharacterDetailsViewModel
+import com.example.charactersapp.presentation.utils.LocalNavController
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -46,9 +63,36 @@ fun CharacterDetailsScreen(
     characterDetails: CharacterDetails
 ) {
 
+    val navController = LocalNavController.current
+
     Scaffold(
         topBar = {
-
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .background(Color.Black)
+                    .statusBarsPadding()
+                    .fillMaxWidth(),
+            ) {
+                IconButton(
+                    onClick = {
+                        navController.popBackStack()
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_arrow_back),
+                        tint = Color.White,
+                        contentDescription = "",
+                    )
+                }
+                Text(
+                    text = "Информация",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+            }
         },
         content = {
             CharacterDetails(
@@ -76,6 +120,7 @@ fun CharacterDetails(
 
     Column(
         modifier = modifier
+            .background(Color.Black)
     ) {
         when (val data = characterDetails) {
 
@@ -103,7 +148,7 @@ fun CharacterDetails(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Ошибка загрузки",
+                            text = stringResource(R.string.error_loading),
                             fontSize = 18.sp,
                             color = Color.Red
                         )
@@ -111,7 +156,7 @@ fun CharacterDetails(
                         Button(
                             onClick = { /* retry logic */ }
                         ) {
-                            Text("Повторить")
+                            Text(stringResource(R.string.retry))
                         }
                     }
                 }
@@ -127,106 +172,118 @@ fun CharacterDetailsContent(
     character: CharacterModel?
 ) {
 
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Основная информация
         item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text(
-                        text = character?.name ?: "",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+            ExpandableSection(title = character?.name ?: "") {
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                    DetailRow(label = "Рост", value = "${character?.height} см")
-                    DetailRow(label = "Масса", value = "${character?.mass} кг")
-                    DetailRow(label = "Цвет волос", value = character?.hairColor ?: "")
-                    DetailRow(label = "Цвет кожи", value = character?.skinColor ?: "")
-                    DetailRow(label = "Цвет глаз", value = character?.eyeColor ?: "")
-                    DetailRow(label = "Год рождения", value = character?.birthYear ?: "")
-                    DetailRow(label = "Пол", value = character?.gender ?: "")
-                }
+                DetailRow(
+                    label = stringResource(id = R.string.height),
+                    value = "${character?.height} см"
+                )
+                DetailRow(
+                    label = stringResource(id = R.string.mass),
+                    value = "${character?.mass} кг"
+                )
+                DetailRow(
+                    label = stringResource(R.string.hair_color),
+                    value = character?.hairColor ?: ""
+                )
+                DetailRow(
+                    label = stringResource(R.string.skin_color),
+                    value = character?.skinColor ?: ""
+                )
+                DetailRow(
+                    label = stringResource(R.string.eye_color),
+                    value = character?.eyeColor ?: ""
+                )
+                DetailRow(
+                    label = stringResource(R.string.birth_year),
+                    value = character?.birthYear ?: ""
+                )
+                DetailRow(
+                    label = stringResource(R.string.gender),
+                    value = character?.gender ?: ""
+                )
             }
         }
 
-        // Планета
         character?.homeworld?.let { planet ->
             item {
-                DetailsSection(title = "Родная планета") {
-                    DetailRow(label = "Название", value = planet.name)
-                    DetailRow(label = "Климат", value = planet.climate)
-                    DetailRow(label = "Террейн", value = planet.terrain)
-                    DetailRow(label = "Население", value = planet.population)
+                ExpandableSection(title = stringResource(R.string.homeworld)) {
+                    DetailRow(
+                        label = stringResource(R.string.name),
+                        value = planet.name
+                    )
+                    DetailRow(
+                        label = stringResource(R.string.climate),
+                        value = planet.climate
+                    )
+                    DetailRow(
+                        label = stringResource(R.string.terrain),
+                        value = planet.terrain
+                    )
+                    DetailRow(
+                        label = stringResource(R.string.population),
+                        value = planet.population
+                    )
                 }
             }
         }
 
-        // Фильмы
-//        if (character?.films?.isNotEmpty()) {
-//            item {
-//                DetailsSection(title = "Фильмы") {
-//                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-//                        character?.films?.forEach { film ->
-//                            FilmCard(film = film)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Виды
-//        if (character?.species?.isNotEmpty()) {
-//            item {
-//                DetailsSection(title = "Виды") {
-//                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-//                        character?.species?.forEach { species ->
-//                            SpeciesCard(species = species)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Транспорт
-//        if (character?.vehicles?.isNotEmpty()) {
-//            item {
-//                DetailsSection(title = "Транспорт") {
-//                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-//                        character?.vehicles?.forEach { vehicle ->
-//                            VehicleCard(vehicle = vehicle)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Звездолеты
-//        if (character?.starships?.isNotEmpty()) {
-//            item {
-//                DetailsSection(title = "Звездолеты") {
-//                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-//                        character?.starships?.forEach { starship ->
-//                            StarshipCard(starship = starship)
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        if (!character?.films.isNullOrEmpty()) {
+            item {
+                ExpandableSection(title = stringResource(R.string.films)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        character.films.forEach { film ->
+                            FilmCard(film = film)
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!character?.species.isNullOrEmpty()) {
+            item {
+                ExpandableSection(title = stringResource(R.string.species)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        character.species.forEach { species ->
+                            SpeciesCard(species = species)
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!character?.vehicles.isNullOrEmpty()) {
+            item {
+                ExpandableSection(title = stringResource(R.string.vehicles)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        character.vehicles.forEach { vehicle ->
+                            VehicleCard(vehicle = vehicle)
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!character?.starships.isNullOrEmpty()) {
+            item {
+                ExpandableSection(title = stringResource(R.string.starships)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        character.starships.forEach { starship ->
+                            StarshipCard(starship = starship)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -234,21 +291,19 @@ fun CharacterDetailsContent(
 fun DetailRow(
     label: String,
     value: String,
-    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            fontSize = 13.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+
         Text(
-            text = value.ifEmpty { "неизвестно" },
+            text = value.ifEmpty { stringResource(R.string.unknown) },
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium
         )
@@ -256,28 +311,55 @@ fun DetailRow(
 }
 
 @Composable
-fun DetailsSection(
+fun ExpandableSection(
     title: String,
+    modifier: Modifier = Modifier,
+    initiallyExpanded: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    var expanded by remember { mutableStateOf(initiallyExpanded) }
+
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        shape = RoundedCornerShape(12.dp)
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .clickable { expanded = !expanded }
+                .padding(16.dp)
         ) {
-            Text(
-                text = title,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = title,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colorScheme.primary
+                )
 
-            content()
+                Icon(
+                    painter = if (expanded) painterResource(R.drawable.ic_arrow_up)
+                    else painterResource(R.drawable.ic_arrow_down),
+                    contentDescription = null
+                )
+            }
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Column(
+                    modifier = Modifier.padding(top = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    content()
+                }
+            }
         }
     }
 }
@@ -286,8 +368,11 @@ fun DetailsSection(
 fun FilmCard(film: FilmModel?) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(8.dp)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Column(
             modifier = Modifier.padding(12.dp)
@@ -295,19 +380,21 @@ fun FilmCard(film: FilmModel?) {
             Text(
                 text = film?.title ?: "",
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.SemiBold
             )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
             Text(
-                text = "Эпизод ${film?.episodeId}",
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                text = "Режиссер: ${film?.director}",
+                text = stringResource(R.string.episode_format, film?.episodeId ?: ""),
                 fontSize = 12.sp
             )
             Text(
-                text = "Дата выхода: ${film?.releaseDate}",
+                text = stringResource(R.string.director_format, film?.director ?: ""),
+                fontSize = 12.sp
+            )
+            Text(
+                text = stringResource(R.string.release_date_format, film?.releaseDate ?: ""),
                 fontSize = 12.sp
             )
         }
@@ -330,11 +417,11 @@ fun SpeciesCard(species: SpeciesModel?) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Классификация: ${species?.classification}",
+                text = stringResource(R.string.classification_format, species?.classification ?: ""),
                 fontSize = 12.sp
             )
             Text(
-                text = "Язык: ${species?.language}",
+                text = stringResource(R.string.language_format, species?.language ?: ""),
                 fontSize = 12.sp
             )
         }
@@ -357,11 +444,11 @@ fun VehicleCard(vehicle: VehiclesModel?) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Модель: ${vehicle?.model}",
+                text = stringResource(R.string.model_format, vehicle?.model ?: ""),
                 fontSize = 12.sp
             )
             Text(
-                text = "Класс: ${vehicle?.vehicleClass}",
+                text = stringResource(R.string.vehicle_class_format, vehicle?.vehicleClass ?: ""),
                 fontSize = 12.sp
             )
         }
@@ -384,11 +471,11 @@ fun StarshipCard(starship: StarshipsModel?) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Модель: ${starship?.model}",
+                text = stringResource(R.string.model_format, starship?.model ?: ""),
                 fontSize = 12.sp
             )
             Text(
-                text = "Класс: ${starship?.starshipClass}",
+                text = stringResource(R.string.starship_class_format, starship?.starshipClass ?: ""),
                 fontSize = 12.sp
             )
         }

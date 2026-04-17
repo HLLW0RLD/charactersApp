@@ -1,5 +1,6 @@
 package com.example.charactersapp.presentation.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,19 +12,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +50,23 @@ fun CharactersFeedScreen() {
 
     Scaffold(
         topBar = {
-
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .background(Color.Black)
+                    .statusBarsPadding()
+                    .padding(horizontal = 16.dp)
+                    .height(48.dp)
+                    .fillMaxWidth(),
+            ) {
+                Text(
+                    text = stringResource(R.string.characters_title),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+            }
         },
         content = {
             CharactersFeed(
@@ -68,6 +90,7 @@ fun CharactersFeed(
 
     Column(
         modifier = modifier
+            .background(Color.Black)
     ) {
         when (val state = charactersPagingItems.loadState.refresh) {
 
@@ -87,7 +110,7 @@ fun CharactersFeed(
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("err")
+                    Text(stringResource(R.string.error_loading))
                 }
             }
 
@@ -98,7 +121,7 @@ fun CharactersFeed(
                             .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("empty")
+                        Text(stringResource(R.string.empty_list))
                     }
                 } else {
                     LazyColumn() {
@@ -138,60 +161,57 @@ fun CharacterItem(
             .clickable {
                 navController.navigate(CharacterDetails(character.id))
             },
+        shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        shape = RoundedCornerShape(12.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
+
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
             ) {
                 Text(
                     text = character.name,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
+                    fontWeight = FontWeight.SemiBold
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     InfoChip(
-                        label = "Рост",
+                        label = stringResource(R.string.height),
                         value = "${character.height} см"
                     )
                     InfoChip(
-                        label = "Вес",
+                        label = stringResource(R.string.mass),
                         value = "${character.mass} кг"
                     )
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     InfoChip(
-                        label = "Цвет волос",
+                        label = stringResource(R.string.hair_color),
                         value = character.hairColor
                     )
                     InfoChip(
-                        label = "Цвет глаз",
+                        label = stringResource(R.string.eye_color),
                         value = character.eyeColor
                     )
                 }
             }
 
             Icon(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = R.drawable.ic_character),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = Color.White
             )
         }
     }
@@ -202,15 +222,24 @@ private fun InfoChip(
     label: String,
     value: String
 ) {
-    Column {
+    Column(
+        modifier = Modifier
+            .width(110.dp)
+            .background(
+                color = Color.Black,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(horizontal = 8.dp, vertical = 6.dp)
+    ) {
         Text(
             text = label,
-            fontSize = 12.sp,
+            fontSize = 11.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = value,
-            fontSize = 14.sp,
+            fontSize = 13.sp,
+            color = Color.White,
             fontWeight = FontWeight.Medium
         )
     }

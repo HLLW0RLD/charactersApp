@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">charactersApp</string>
+
+    <string name="characters_title">Персонажи</string>
+    <string name="error_loading">Ошибка загрузки</string>
+    <string name="empty_list">Список пуст</string>
+    <string name="retry">Повторить</string>
+    <string name="unknown">неизвестно</string>
+    <string name="height">Рост</string>
+    <string name="mass">Вес</string>
+    <string name="hair_color">Цвет волос</string>
+    <string name="eye_color">Цвет глаз</string>
+    <string name="skin_color">Цвет кожи</string>
+    <string name="birth_year">Год рождения</string>
+    <string name="gender">Пол</string>
+    <string name="homeworld">Родная планета</string>
+    <string name="name">Название</string>
+    <string name="climate">Климат</string>
+    <string name="terrain">Террейн</string>
+    <string name="population">Население</string>
+    <string name="films">Фильмы</string>
+    <string name="species">Виды</string>
+    <string name="vehicles">Транспорт</string>
+    <string name="starships">Звездолеты</string>
+    <string name="episode_format">Эпизод %s</string>
+    <string name="director_format">Режиссер: %s</string>
+    <string name="release_date_format">Дата выхода: %s</string>
+    <string name="classification_format">Классификация: %s</string>
+    <string name="language_format">Язык: %s</string>
+    <string name="model_format">Модель: %s</string>
+    <string name="vehicle_class_format">Класс: %s</string>
+    <string name="starship_class_format">Класс: %s</string>
 </resources>
